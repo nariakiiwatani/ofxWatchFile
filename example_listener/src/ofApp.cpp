@@ -3,13 +3,18 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	file_.addListener(this, &ofApp::fileEvent);
+	file_.addListener(this, &ofApp::fileEvent2);
 	file_.setTargetPath("hoge.txt");
 }
+
 void ofApp::fileEvent(ofFile &file)
 {
-	cout << "loaded" << endl;
+	cout << "loaded event function called" << endl;
 }
-
+void ofApp::fileEvent2(const void *sender, ofFile &file)
+{
+	cout << "loaded event function (with sender) called" << endl;
+}
 //--------------------------------------------------------------
 void ofApp::update(){
 

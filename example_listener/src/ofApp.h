@@ -22,4 +22,5 @@ public:
 private:
 	ofxWatchFile file_;
 	void fileEvent(ofFile &file);
+	void fileEvent2(const void *sender, ofFile &file);
 };

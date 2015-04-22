@@ -41,7 +41,15 @@ public:
 		ofAddListener(loaded_event_, listener, method, prio);
 	}
 	template<class Listener>
+	void addListener(Listener *listener, void (Listener::*method)(const void *sender, ofFile&), int prio=OF_EVENT_ORDER_AFTER_APP) {
+		ofAddListener(loaded_event_, listener, method, prio);
+	}
+	template<class Listener>
 	void removeListener(Listener *listener, void (Listener::*method)(ofFile&), int prio=OF_EVENT_ORDER_AFTER_APP) {
+		ofRemoveListener(loaded_event_, listener, method, prio);
+	}
+	template<class Listener>
+	void removeListener(Listener *listener, void (Listener::*method)(const void *sender, ofFile&), int prio=OF_EVENT_ORDER_AFTER_APP) {
 		ofRemoveListener(loaded_event_, listener, method, prio);
 	}
 
