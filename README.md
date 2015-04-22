@@ -1,0 +1,1 @@
+inspired by [ofxAutoReloadedShader](https://github.com/andreasmuller/ofxAutoReloadedShader)
