@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	ofAddListener(file_.loadedEvent, this, &ofApp::fileEvent);
+	file_.addListener(this, &ofApp::fileEvent);
 	file_.setTargetPath("hoge.txt");
 }
 void ofApp::fileEvent(ofFile &file)

@@ -35,7 +35,15 @@ public:
 	void disableWatching();
 	bool isWatching() { return is_watching_; }
 	
-	ofEvent<ofFile> loadedEvent;
+	// event listeners
+	template<class Listener>
+	void addListener(Listener *listener, void (Listener::*method)(ofFile&), int prio=OF_EVENT_ORDER_AFTER_APP) {
+		ofAddListener(loaded_event_, listener, method, prio);
+	}
+	template<class Listener>
+	void removeListener(Listener *listener, void (Listener::*method)(ofFile&), int prio=OF_EVENT_ORDER_AFTER_APP) {
+		ofRemoveListener(loaded_event_, listener, method, prio);
+	}
 
 	// if you want to check/load manually, use these functions.
 	bool load();
@@ -58,6 +66,7 @@ private:
 	float time_from_last_checked_;
 	bool is_watching_;
 
+	ofEvent<ofFile> loaded_event_;
 	void update(ofEventArgs &args);
 };
 

@@ -19,6 +19,7 @@ File::File()
 File::~File()
 {
 	disableWatching();
+	loaded_event_.clear();
 }
 
 void File::setTargetPath(const string &path, bool load_immediately)
@@ -35,7 +36,7 @@ bool File::load()
 	if(file_.exists()) {
 		last_loaded_timestamp_ = file_.getPocoFile().getLastModified().epochTime();
 		reload(file_);
-		ofNotifyEvent(loadedEvent, file_, this);
+		ofNotifyEvent(loaded_event_, file_, this);
 		return true;
 	}
 	return false;
