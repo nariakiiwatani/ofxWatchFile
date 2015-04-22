@@ -3,7 +3,12 @@
 #include "ofFileUtils.h"
 #include "ofEvents.h"
 
-class ofxWatchFile
+#define OFX_WATCH_FILE_BEGIN_NAMESPACE namespace ofx { namespace WatchFile {
+#define OFX_WATCH_FILE_END_NAMESPACE } }
+
+OFX_WATCH_FILE_BEGIN_NAMESPACE
+
+class File
 {
 public:
 	struct LoadSettings {
@@ -21,8 +26,8 @@ public:
 		:interval_timef(1)
 		{}
 	};
-	ofxWatchFile();
-	~ofxWatchFile();
+	File();
+	virtual ~File();
 	void setTargetPath(const string &path, bool load_immediately=true);
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
@@ -39,7 +44,10 @@ public:
 	// advanced settings
 	void setLoadSettings(const LoadSettings &settings) { load_settings_ = settings; }
 	void setCheckSettings(const CheckSettings &settings) { check_settings_ = settings; }
-
+	
+protected:
+	virtual void reload(ofFile &file){};
+	
 private:
 	string file_path_;
 	LoadSettings load_settings_;
@@ -53,3 +61,6 @@ private:
 	void update(ofEventArgs &args);
 };
 
+OFX_WATCH_FILE_END_NAMESPACE
+
+typedef ofx::WatchFile::File ofxWatchFile;

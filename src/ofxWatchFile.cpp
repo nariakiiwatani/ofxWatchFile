@@ -2,7 +2,9 @@
 #include "ofAppRunner.h"
 #include "ofUtils.h"
 
-ofxWatchFile::ofxWatchFile()
+OFX_WATCH_FILE_BEGIN_NAMESPACE
+
+File::File()
 :file_path_("")
 ,load_settings_()
 ,check_settings_()
@@ -14,12 +16,12 @@ ofxWatchFile::ofxWatchFile()
 	enableWatching();
 }
 
-ofxWatchFile::~ofxWatchFile()
+File::~File()
 {
 	disableWatching();
 }
 
-void ofxWatchFile::setTargetPath(const string &path, bool load_immediately)
+void File::setTargetPath(const string &path, bool load_immediately)
 {
 	file_path_ = path;
 	if(load_immediately) {
@@ -27,18 +29,19 @@ void ofxWatchFile::setTargetPath(const string &path, bool load_immediately)
 	}
 }
 
-bool ofxWatchFile::load()
+bool File::load()
 {
 	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
 	if(file_.exists()) {
 		last_loaded_timestamp_ = file_.getPocoFile().getLastModified().epochTime();
+		reload(file_);
 		ofNotifyEvent(loadedEvent, file_, this);
 		return true;
 	}
 	return false;
 }
 
-bool ofxWatchFile::isChangedFromLastLoaded()
+bool File::isChangedFromLastLoaded()
 {
 	if(file_.exists()) {
 		return last_loaded_timestamp_ != file_.getPocoFile().getLastModified().epochTime();
@@ -47,23 +50,23 @@ bool ofxWatchFile::isChangedFromLastLoaded()
 }
 
 
-void ofxWatchFile::enableWatching()
+void File::enableWatching()
 {
 	if(!isWatching()) {
-		ofAddListener(ofEvents().update, this, &ofxWatchFile::update);
+		ofAddListener(ofEvents().update, this, &File::update);
 		is_watching_ = true;
 	}
 }
 
-void ofxWatchFile::disableWatching()
+void File::disableWatching()
 {
 	if(isWatching()) {
-		ofRemoveListener(ofEvents().update, this, &ofxWatchFile::update);
+		ofRemoveListener(ofEvents().update, this, &File::update);
 		is_watching_ = false;
 	}
 }
 
-void ofxWatchFile::update(ofEventArgs &args)
+void File::update(ofEventArgs &args)
 {
 	time_from_last_checked_ += ofGetLastFrameTime();
 	if(time_from_last_checked_ >= check_settings_.interval_timef) {
@@ -74,3 +77,4 @@ void ofxWatchFile::update(ofEventArgs &args)
 	}
 }
 
+OFX_WATCH_FILE_END_NAMESPACE
