@@ -14,7 +14,6 @@ public:
 	struct LoadSettings {
 		ofFile::Mode mode;
 		bool is_binary;
-		
 		LoadSettings()
 		:mode(ofFile::ReadOnly)
 		,is_binary(false)
@@ -22,8 +21,10 @@ public:
 	};
 	struct CheckSettings {
 		float interval_timef;
+		bool reckless_mode;	// don't check if the file exists or not. hangs if not.
 		CheckSettings()
 		:interval_timef(1)
+		,reckless_mode(false)
 		{}
 	};
 	File();
