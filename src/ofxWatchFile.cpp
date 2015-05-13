@@ -79,7 +79,7 @@ void File::update(ofEventArgs &args)
 {
 	time_from_last_checked_ += ofGetLastFrameTime();
 	if(time_from_last_checked_ >= check_settings_.interval_timef) {
-		if(check_settings_.reckless_mode || isChangedFromLastLoaded()) {
+		if((check_settings_.reckless_mode && last_loaded_timestamp_ != file_.getPocoFile().getLastModified().epochTime()) || isChangedFromLastLoaded()) {
 			forceLoad();
 		}
 		time_from_last_checked_ = 0;
