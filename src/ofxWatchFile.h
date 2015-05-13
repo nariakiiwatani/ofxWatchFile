@@ -55,6 +55,7 @@ public:
 
 	// if you want to check/load manually, use these functions.
 	bool load();
+	void forceLoad(); // a bit faster than load() but hangs if the file doesn't exist.
 	bool isChangedFromLastLoaded();	
 
 	// advanced settings

@@ -42,6 +42,14 @@ bool File::load()
 	return false;
 }
 
+void File::forceLoad()
+{
+	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
+	last_loaded_timestamp_ = file_.getPocoFile().getLastModified().epochTime();
+	reload(file_);
+	ofNotifyEvent(loaded_event_, file_, this);
+}
+
 bool File::isChangedFromLastLoaded()
 {
 	if(file_.exists()) {
@@ -72,7 +80,7 @@ void File::update(ofEventArgs &args)
 	time_from_last_checked_ += ofGetLastFrameTime();
 	if(time_from_last_checked_ >= check_settings_.interval_timef) {
 		if(isChangedFromLastLoaded()) {
-			load();
+			forceLoad();
 		}
 		time_from_last_checked_ = 0;
 	}
