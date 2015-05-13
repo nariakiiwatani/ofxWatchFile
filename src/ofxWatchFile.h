@@ -61,6 +61,8 @@ public:
 	// advanced settings
 	void setLoadSettings(const LoadSettings &settings) { load_settings_ = settings; }
 	void setCheckSettings(const CheckSettings &settings) { check_settings_ = settings; }
+	LoadSettings& getLoadSettings() { return load_settings_; }
+	CheckSettings& getCheckSettings() { return check_settings_; }
 	
 protected:
 	virtual void reload(ofFile &file){};
