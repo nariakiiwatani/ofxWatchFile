@@ -1,6 +1,7 @@
 #include "ofxWatchFile.h"
 #include "ofAppRunner.h"
 #include "ofUtils.h"
+#include <boost/filesystem.hpp>
 
 OFX_WATCH_FILE_BEGIN_NAMESPACE
 
@@ -19,7 +20,6 @@ File::File()
 File::~File()
 {
 	disableWatching();
-	loaded_event_.clear();
 }
 
 void File::setTargetPath(const string &path, bool load_immediately)
@@ -34,7 +34,7 @@ bool File::load()
 {
 	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
 	if(file_.exists()) {
-		last_loaded_timestamp_ = file_.getPocoFile().getLastModified().epochTime();
+		last_loaded_timestamp_ = getLastWriteTime();
 		reload(file_);
 		ofNotifyEvent(loaded_event_, file_, this);
 		return true;
@@ -45,7 +45,7 @@ bool File::load()
 void File::forceLoad()
 {
 	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
-	last_loaded_timestamp_ = file_.getPocoFile().getLastModified().epochTime();
+	last_loaded_timestamp_ = getLastWriteTime();
 	reload(file_);
 	ofNotifyEvent(loaded_event_, file_, this);
 }
@@ -53,7 +53,7 @@ void File::forceLoad()
 bool File::isChangedFromLastLoaded()
 {
 	if(file_.exists()) {
-		return last_loaded_timestamp_ != file_.getPocoFile().getLastModified().epochTime();
+		return last_loaded_timestamp_ != getLastWriteTime();
 	}
 	return false;
 }
@@ -79,11 +79,16 @@ void File::update(ofEventArgs &args)
 {
 	time_from_last_checked_ += ofGetLastFrameTime();
 	if(time_from_last_checked_ >= check_settings_.interval_timef) {
-		if((check_settings_.reckless_mode && last_loaded_timestamp_ != file_.getPocoFile().getLastModified().epochTime()) || isChangedFromLastLoaded()) {
+		if((check_settings_.reckless_mode && last_loaded_timestamp_ != getLastWriteTime()) || isChangedFromLastLoaded()) {
 			forceLoad();
 		}
 		time_from_last_checked_ = 0;
 	}
+}
+
+time_t File::getLastWriteTime()
+{
+	return boost::filesystem::last_write_time(ofToDataPath(file_path_));
 }
 
 OFX_WATCH_FILE_END_NAMESPACE

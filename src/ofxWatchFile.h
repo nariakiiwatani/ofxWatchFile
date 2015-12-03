@@ -80,6 +80,7 @@ private:
 
 	ofEvent<ofFile> loaded_event_;
 	void update(ofEventArgs &args);
+	time_t getLastWriteTime();
 };
 
 OFX_WATCH_FILE_END_NAMESPACE

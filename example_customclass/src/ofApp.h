@@ -7,7 +7,7 @@ class AutoReloadImage : public ofxWatchFile, public ofImage
 {
 private:
 	void reload(ofFile &file) {
-		loadImage(file.path());
+		ofImage::load(file.path());
 	}
 };
 
