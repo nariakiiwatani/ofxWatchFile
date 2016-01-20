@@ -12,24 +12,17 @@ class File
 {
 public:
 	struct LoadSettings {
-		ofFile::Mode mode;
-		bool is_binary;
-		LoadSettings()
-		:mode(ofFile::ReadOnly)
-		,is_binary(false)
-		{}
+		ofFile::Mode mode = ofFile::ReadOnly;
+		bool is_binary = false;
 	};
 	struct CheckSettings {
-		float interval_timef;
-		bool reckless_mode;	// don't check if the file exists or not. hangs if not.
-		CheckSettings()
-		:interval_timef(1)
-		,reckless_mode(false)
-		{}
+		float interval_timef = 1;
+		bool reckless_mode = false;	// set it true if you need speed seriously. but hangs if the file doesn't exist.
 	};
-	File();
-	virtual ~File();
-	void setTargetPath(const string &path, bool load_immediately=true);
+	File() { enableWatching(); }
+	virtual ~File() { disableWatching(); }
+	
+	void setTargetPath(const std::string &path, bool load_immediately=true);
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
 	void enableWatching();
@@ -69,20 +62,20 @@ protected:
 	virtual void reload(ofFile &file){};
 	
 private:
-	string file_path_;
+	std::string file_path_ = "";
 	LoadSettings load_settings_;
 	CheckSettings check_settings_;
 	
 	ofFile file_;
-	std::time_t last_loaded_timestamp_;
-	float time_from_last_checked_;
-	bool is_watching_;
+	std::time_t last_loaded_timestamp_ = 0;
+	float time_from_last_checked_ = 0;
+	bool is_watching_ = false;
 
 	ofEvent<ofFile> loaded_event_;
 	void update(ofEventArgs &args);
-	time_t getLastWriteTime();
+	std::time_t getLastWriteTime();
 };
 
 OFX_WATCH_FILE_END_NAMESPACE
 
-typedef ofx::WatchFile::File ofxWatchFile;
+using ofxWatchFile = ofx::WatchFile::File;

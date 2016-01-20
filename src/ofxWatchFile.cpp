@@ -5,24 +5,7 @@
 
 OFX_WATCH_FILE_BEGIN_NAMESPACE
 
-File::File()
-:file_path_("")
-,load_settings_()
-,check_settings_()
-,file_()
-,last_loaded_timestamp_(0)
-,time_from_last_checked_(0)
-,is_watching_(false)
-{
-	enableWatching();
-}
-
-File::~File()
-{
-	disableWatching();
-}
-
-void File::setTargetPath(const string &path, bool load_immediately)
+void File::setTargetPath(const std::string &path, bool load_immediately)
 {
 	file_path_ = path;
 	if(load_immediately) {
@@ -86,7 +69,7 @@ void File::update(ofEventArgs &args)
 	}
 }
 
-time_t File::getLastWriteTime()
+std::time_t File::getLastWriteTime()
 {
 	return boost::filesystem::last_write_time(ofToDataPath(file_path_));
 }
