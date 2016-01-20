@@ -9,11 +9,11 @@ void ofApp::setup(){
 
 void ofApp::fileEvent(ofFile &file)
 {
-	cout << "loaded event function called" << endl;
+	std::cout << "loaded event function called" << std::endl;
 }
 void ofApp::fileEvent2(const void *sender, ofFile &file)
 {
-	cout << "loaded event function (with sender) called" << endl;
+	std::cout << "loaded event function (with sender) called" << std::endl;
 }
 //--------------------------------------------------------------
 void ofApp::update(){
