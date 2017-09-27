@@ -5,32 +5,38 @@
 
 OFX_WATCH_FILE_BEGIN_NAMESPACE
 
-void File::setTargetPath(const std::string &path, bool load_immediately)
+bool File::setTargetPath(const std::string &path, bool load_immediately)
 {
 	file_path_ = path;
 	if(load_immediately) {
-		load();
+		return load();
 	}
+	return true;
 }
 
 bool File::load()
 {
-	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
-	if(file_.exists()) {
-		last_loaded_timestamp_ = getLastWriteTime();
-		reload(file_);
-		ofNotifyEvent(loaded_event_, file_, this);
-		return true;
+	if(file_path_ != "" && file_.open(file_path_, load_settings_.mode, load_settings_.is_binary)) {
+		if(file_.exists()) {
+			last_loaded_timestamp_ = getLastWriteTime();
+			if(reload(file_)) {
+				ofNotifyEvent(loaded_event_, file_, this);
+				return true;
+			}
+		}
 	}
 	return false;
 }
 
-void File::forceLoad()
+bool File::forceLoad()
 {
 	file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
 	last_loaded_timestamp_ = getLastWriteTime();
-	reload(file_);
-	ofNotifyEvent(loaded_event_, file_, this);
+	if(reload(file_)) {
+		ofNotifyEvent(loaded_event_, file_, this);
+		return true;
+	}
+	return false;
 }
 
 bool File::isChangedFromLastLoaded()

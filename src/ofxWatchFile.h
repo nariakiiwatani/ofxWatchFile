@@ -22,7 +22,7 @@ public:
 	File() { enableWatching(); }
 	virtual ~File() { disableWatching(); }
 	
-	void setTargetPath(const std::string &path, bool load_immediately=true);
+	bool setTargetPath(const std::string &path, bool load_immediately=true);
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
 	void enableWatching();
@@ -49,7 +49,7 @@ public:
 
 	// if you want to check/load manually, use these functions.
 	bool load();
-	void forceLoad(); // a bit faster than load() but hangs if the file doesn't exist.
+	bool forceLoad(); // a bit faster than load() but hangs if the file doesn't exist.
 	bool isChangedFromLastLoaded();	
 
 	// advanced settings
@@ -59,7 +59,7 @@ public:
 	CheckSettings& getCheckSettings() { return check_settings_; }
 	
 protected:
-	virtual void reload(ofFile &file){};
+	virtual bool reload(ofFile &file) { return true; }
 	
 private:
 	std::string file_path_ = "";

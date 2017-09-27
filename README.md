@@ -13,7 +13,7 @@ There are 2 ways to receive the result,
 
 ```
 ofxWatchFile file;
-file.addEventListener(this, &MyClass::onFileChanged);
+file.addListener(this, &MyClass::onFileChanged);
 // MyClass::onFileChanged is called when the target file is changed
 ```
 
@@ -21,7 +21,7 @@ file.addEventListener(this, &MyClass::onFileChanged);
 
 ```
 class MyClass : public ofxWatchFile {
-	void reload(ofFile &file);	// override function
+	bool reload(ofFile &file);	// override function
 };
 // MyClass::reload is called when the target file is changed
 ```
