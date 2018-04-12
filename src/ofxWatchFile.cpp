@@ -48,8 +48,11 @@ bool File::isChangedFromLastLoaded()
 }
 
 
-void File::enableWatching()
+void File::enableWatching(bool ignore_current_version)
 {
+	if(ignore_current_version) {
+		last_loaded_timestamp_ = getLastWriteTime();
+	}
 	if(!isWatching()) {
 		ofAddListener(ofEvents().update, this, &File::update);
 		is_watching_ = true;

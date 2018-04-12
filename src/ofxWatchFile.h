@@ -25,7 +25,7 @@ public:
 	bool setTargetPath(const std::string &path, bool load_immediately=true);
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
-	void enableWatching();
+	void enableWatching(bool ignore_current_version=false);
 	void disableWatching();
 	bool isWatching() { return is_watching_; }
 	
