@@ -23,6 +23,7 @@ public:
 	virtual ~File() { disableWatching(); }
 	
 	bool setTargetPath(const std::string &path, bool load_immediately=true);
+	std::string getTargetPath() const { return file_path_; }
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
 	void enableWatching(bool ignore_current_version=false);
