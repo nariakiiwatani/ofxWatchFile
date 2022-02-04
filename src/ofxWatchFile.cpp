@@ -5,7 +5,7 @@
 
 OFX_WATCH_FILE_BEGIN_NAMESPACE
 
-bool File::setTargetPath(const std::string &path, bool load_immediately)
+bool File::setTargetPath(const std::filesystem::path &path, bool load_immediately)
 {
 	file_path_ = path;
 	if(load_immediately) {

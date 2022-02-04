@@ -22,8 +22,8 @@ public:
 	File() { enableWatching(); }
 	virtual ~File() { disableWatching(); }
 	
-	bool setTargetPath(const std::string &path, bool load_immediately=true);
-	std::string getTargetPath() const { return file_path_; }
+	bool setTargetPath(const std::filesystem::path &path, bool load_immediately=true);
+	std::filesystem::path getTargetPath() const { return file_path_; }
 	void setCheckIntervalTimef(float timef) { check_settings_.interval_timef = timef; }
 
 	void enableWatching(bool ignore_current_version=false);
@@ -63,7 +63,7 @@ protected:
 	virtual bool reload(ofFile &file) { return true; }
 	
 private:
-	std::string file_path_ = "";
+	std::filesystem::path file_path_ = "";
 	LoadSettings load_settings_;
 	CheckSettings check_settings_;
 	
