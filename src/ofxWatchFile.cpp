@@ -11,6 +11,12 @@ bool File::setTargetPath(const std::filesystem::path &path, bool load_immediatel
 	if(load_immediately) {
 		return load();
 	}
+	else {
+		file_.open(file_path_, load_settings_.mode, load_settings_.is_binary);
+		if(file_.exists()) {
+			last_loaded_timestamp_ = getLastWriteTime();
+		}
+	}
 	return true;
 }
 
