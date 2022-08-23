@@ -28,7 +28,7 @@ public:
 
 	void enableWatching(bool ignore_current_version=false);
 	void disableWatching();
-	bool isWatching() { return is_watching_; }
+	bool isWatching() const { return is_watching_; }
 	
 	// event listeners
 	template<class Listener>
@@ -51,7 +51,7 @@ public:
 	// if you want to check/load manually, use these functions.
 	bool load();
 	bool forceLoad(); // a bit faster than load() but hangs if the file doesn't exist.
-	bool isChangedFromLastLoaded();	
+	bool isChangedFromLastLoaded() const;
 
 	// advanced settings
 	void setLoadSettings(const LoadSettings &settings) { load_settings_ = settings; }
@@ -60,7 +60,7 @@ public:
 	CheckSettings& getCheckSettings() { return check_settings_; }
 	
 protected:
-	virtual bool reload(ofFile &file) { return true; }
+	virtual bool reload(ofFile &file) const { return true; }
 	
 private:
 	std::filesystem::path file_path_ = "";
@@ -74,7 +74,7 @@ private:
 
 	ofEvent<ofFile> loaded_event_;
 	void update(ofEventArgs &args);
-	std::time_t getLastWriteTime();
+	std::time_t getLastWriteTime() const;
 };
 
 OFX_WATCH_FILE_END_NAMESPACE

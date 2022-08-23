@@ -45,7 +45,7 @@ bool File::forceLoad()
 	return false;
 }
 
-bool File::isChangedFromLastLoaded()
+bool File::isChangedFromLastLoaded() const
 {
 	if(file_.exists()) {
 		return last_loaded_timestamp_ != getLastWriteTime();
@@ -84,7 +84,7 @@ void File::update(ofEventArgs &args)
 	}
 }
 
-std::time_t File::getLastWriteTime()
+std::time_t File::getLastWriteTime() const
 {
 	return boost::filesystem::last_write_time(ofToDataPath(file_path_));
 }
