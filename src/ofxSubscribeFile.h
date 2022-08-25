@@ -63,7 +63,7 @@ std::shared_ptr<ofx::WatchFile::Subscribed> ofxSubscribeFile(const std::filesyst
 	}, retain);
 }
 
-bool ofxUnsubscribeFile(std::shared_ptr<ofx::WatchFile::Subscribed> subscribed) {
+static bool ofxUnsubscribeFile(std::shared_ptr<ofx::WatchFile::Subscribed> subscribed) {
 	auto found = find_if(begin(subscribed_container), end(subscribed_container), [subscribed](const std::pair<std::filesystem::path, std::shared_ptr<ofx::WatchFile::Subscribed>> s) {
 		return subscribed == s.second;
 	});
@@ -75,7 +75,7 @@ bool ofxUnsubscribeFile(std::shared_ptr<ofx::WatchFile::Subscribed> subscribed) 
 	subscribed_container.erase(found);
 	return true;
 }
-bool ofxUnsubscribeFile(const std::filesystem::path &filepath) {
+static bool ofxUnsubscribeFile(const std::filesystem::path &filepath) {
 	auto range = subscribed_container.equal_range(filepath);
 	if(range.first == end(subscribed_container)) {
 		return false;
@@ -84,8 +84,7 @@ bool ofxUnsubscribeFile(const std::filesystem::path &filepath) {
 	return true;
 }
 
-
-std::vector<std::shared_ptr<ofx::WatchFile::Subscribed>> ofxGetSubscribers(const std::filesystem::path &filepath) {
+static std::vector<std::shared_ptr<ofx::WatchFile::Subscribed>> ofxGetSubscribers(const std::filesystem::path &filepath) {
 	auto range = subscribed_container.equal_range(filepath);
 	std::vector<std::shared_ptr<ofx::WatchFile::Subscribed>> ret;
 	for(auto it = range.first; it != range.second; ++it) {
