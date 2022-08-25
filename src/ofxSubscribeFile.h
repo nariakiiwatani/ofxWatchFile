@@ -21,9 +21,23 @@ public:
 	void enable() { watcher_.enableWatching(); }
 	void disable() { watcher_.disableWatching(); }
 	void setEnabled(bool enabled) { enabled ? enable() : disable(); }
+	void reload() { watcher_.forceLoad(); }
 	void callback(ofFile &file) { func_(file); }
+	void addSubPath(const std::filesystem::path &filepath) {
+		auto result = sub_watcher_.insert({filepath, std::make_shared<ofxWatchFile>()});
+		if(result.second) {
+			auto sub = result.first->second;
+			sub->addListener(this, &Subscribed::reload);
+			sub->setTargetPath(filepath);
+		}
+	}
+	void removeSubPath(const std::filesystem::path &path) {
+		sub_watcher_.erase(path);
+	}
 private:
 	ofxWatchFile watcher_;
+	std::map<std::filesystem::path, std::shared_ptr<ofxWatchFile>> sub_watcher_;
+	void reload(ofFile&) { reload(); }
 	std::function<void(ofFile&)> func_;
 };
 
@@ -68,4 +82,14 @@ bool ofxUnsubscribeFile(const std::filesystem::path &filepath) {
 	}
 	subscribed_container.erase(found);
 	return true;
+}
+
+
+std::vector<std::shared_ptr<ofx::WatchFile::Subscribed>> ofxGetSubscribers(const std::filesystem::path &filepath) {
+	auto range = subscribed_container.equal_range(filepath);
+	std::vector<std::shared_ptr<ofx::WatchFile::Subscribed>> ret;
+	for(auto it = range.first; it != range.second; ++it) {
+		ret.push_back(it->second);
+	}
+	return ret;
 }
