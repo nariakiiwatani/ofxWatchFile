@@ -45,7 +45,7 @@ private:
 OFX_WATCH_FILE_END_NAMESPACE
 
 namespace {
-std::map<std::filesystem::path, std::shared_ptr<ofx::WatchFile::Subscribed>> subscribed_container;
+std::multimap<std::filesystem::path, std::shared_ptr<ofx::WatchFile::Subscribed>> subscribed_container;
 }
 
 template<typename Func>
@@ -76,11 +76,11 @@ bool ofxUnsubscribeFile(std::shared_ptr<ofx::WatchFile::Subscribed> subscribed) 
 	return true;
 }
 bool ofxUnsubscribeFile(const std::filesystem::path &filepath) {
-	auto found = subscribed_container.find(filepath);
-	if(found == end(subscribed_container)) {
+	auto range = subscribed_container.equal_range(filepath);
+	if(range.first == end(subscribed_container)) {
 		return false;
 	}
-	subscribed_container.erase(found);
+	subscribed_container.erase(range.first, range.second);
 	return true;
 }
 
