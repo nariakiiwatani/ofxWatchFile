@@ -6,8 +6,9 @@
 class AutoReloadImage : public ofxWatchFile, public ofImage
 {
 private:
-	void reload(ofFile &file) {
+	bool reload(ofFile &file) override {
 		ofImage::load(file.path());
+		return true;
 	}
 };
 

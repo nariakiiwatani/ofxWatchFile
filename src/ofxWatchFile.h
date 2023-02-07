@@ -60,7 +60,7 @@ public:
 	CheckSettings& getCheckSettings() { return check_settings_; }
 	
 protected:
-	virtual bool reload(ofFile &file) const { return true; }
+	virtual bool reload(ofFile &file) { return true; }
 	
 private:
 	std::filesystem::path file_path_ = "";

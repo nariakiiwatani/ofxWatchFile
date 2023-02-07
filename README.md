@@ -21,7 +21,7 @@ file.addListener(this, &MyClass::onFileChanged);
 
 ```
 class MyClass : public ofxWatchFile {
-	bool reload(ofFile &file);	// override function
+	bool reload(ofFile &file) override;
 };
 // MyClass::reload is called when the target file is changed
 ```
