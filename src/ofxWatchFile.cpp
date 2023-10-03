@@ -1,7 +1,6 @@
 #include "ofxWatchFile.h"
 #include "ofAppRunner.h"
 #include "ofUtils.h"
-#include <boost/filesystem.hpp>
 
 OFX_WATCH_FILE_BEGIN_NAMESPACE
 
@@ -84,9 +83,17 @@ void File::update(ofEventArgs &args)
 	}
 }
 
+template <typename TP>
+std::time_t to_time_t(TP tp)
+{
+	using namespace std::chrono;
+	auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
+	return system_clock::to_time_t(sctp);
+}
+
 std::time_t File::getLastWriteTime() const
 {
-	return boost::filesystem::last_write_time(ofToDataPath(file_path_));
+	return to_time_t(std::filesystem::last_write_time(ofToDataPath(file_path_)));
 }
 
 OFX_WATCH_FILE_END_NAMESPACE
