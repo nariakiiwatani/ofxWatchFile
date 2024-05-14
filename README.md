@@ -1,8 +1,13 @@
-inspired by [ofxAutoReloadedShader](https://github.com/andreasmuller/ofxAutoReloadedShader)
+# Attention
+I prefer using [ofxWatcher](https://github.com/nariakiiwatani/ofxWatcher) now because it's more flexible and straightforward.  
+Please check it out!
+
+---
 
 # ofxWatchFile
 
 auto reload any file when it is modified
+inspired by [ofxAutoReloadedShader](https://github.com/andreasmuller/ofxAutoReloadedShader)
 
 ## usage
 See example. Shortly, see below.  
